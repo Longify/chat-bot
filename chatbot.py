@@ -34,9 +34,9 @@ class ChatBotUI(QMainWindow):
         self.init_ui()
         
     def init_gemini(self):
-        API_KEY = "AIzaSyBbHwNJwokDMCglZ5PL9dAz_VwsRA5zQ1I"
+        API_KEY = "GEMINI_API_KEY"
         
-        if API_KEY == "YOUR_GEMINI_API_KEY_HERE":
+        if API_KEY == "GEMINI_API_KEY":
             print("⚠️ 警告: APIキーを設定してください！")
             print("https://aistudio.google.com/app/apikey でAPIキーを取得できます")
         
