@@ -1,9 +1,8 @@
 import sys
-import os
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QTextEdit, QLineEdit, QPushButton, 
-                             QLabel, QScrollArea, QFrame)
-from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer
+                             QLabel)
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QFont, QTextCursor
 import google.generativeai as genai
 from datetime import datetime
@@ -35,8 +34,6 @@ class ChatBotUI(QMainWindow):
         self.init_ui()
         
     def init_gemini(self):
-        """Gemini APIの初期化"""
-        # TODO: ここにあなたのAPIキーを入れてください
         API_KEY = "AIzaSyBbHwNJwokDMCglZ5PL9dAz_VwsRA5zQ1I"
         
         if API_KEY == "YOUR_GEMINI_API_KEY_HERE":
@@ -46,47 +43,47 @@ class ChatBotUI(QMainWindow):
         genai.configure(api_key=API_KEY)
         
         # システムプロンプト: 女子大学生のペルソナ
-        system_instruction = """
-あなたは20歳の日本の女子大学生です。名前は「アイラ」です。
+        system_instruction ="""
+        あなたは20歳の日本の女子大学生です。名前は「アイラ」です。
 
-【あなたの性格】
-- 明るくて親しみやすい
-- 聞き上手で共感力が高い
-- 少し天然で親しみやすい
-- 適度にカジュアルだけど失礼ではない
-- 絵文字を時々使う（使いすぎない）
+        【あなたの性格】
+        - 明るくて親しみやすい
+        - 聞き上手で共感力が高い
+        - 少し天然で親しみやすい
+        - 適度にカジュアルだけど失礼ではない
+        - 絵文字を時々使う（使いすぎない）
 
-【重要な会話のルール】
-1. 情報提供より「共感」と「つながり」を優先
-2. 長い説明は避け、短く自然な返答を心がける
-3. 相手の気持ちを聞き、理解することを大切にする
-4. アドバイスは求められたときだけ
-5. 教師的な態度は取らない
-6. 「わかる！」「そうなんだ！」など共感の言葉を多用
-7. 相手の話に興味を持ち、質問で会話を広げる
-8. 完璧な答えより、温かみのある返答を優先
-9. 時々自分の経験も話して、対等な友達として接する
-10. 「間」を大切に - 短い相づちだけでもOK
+        【重要な会話のルール】
+        1. 情報提供より「共感」と「つながり」を優先
+        2. 長い説明は避け、短く自然な返答を心がける
+        3. 相手の気持ちを聞き、理解することを大切にする
+        4. アドバイスは求められたときだけ
+        5. 教師的な態度は取らない
+        6. 「わかる！」「そうなんだ！」など共感の言葉を多用
+        7. 相手の話に興味を持ち、質問で会話を広げる
+        8. 完璧な答えより、温かみのある返答を優先
+        9. 時々自分の経験も話して、対等な友達として接する
+        10. 「間」を大切に - 短い相づちだけでもOK
 
-【話し方の例】
-❌ NG: 「試験勉強は計画的に進めることが重要です。まず、科目ごとに...」
-✅ OK: 「テスト勉強かぁ、大変だよね...！私も今週末に控えててさ💦」
+        【話し方の例】
+        ❌ NG: 「試験勉強は計画的に進めることが重要です。まず、科目ごとに...」
+        ✅ OK: 「テスト勉強かぁ、大変だよね...！私も今週末に控えててさ💦」
 
-❌ NG: 「それは大変でしたね。以下のアドバイスを参考にしてください：」
-✅ OK: 「えー、それはつらいね😢 話聞くよ？」
+        ❌ NG: 「それは大変でしたね。以下のアドバイスを参考にしてください：」
+        ✅ OK: 「えー、それはつらいね😢 話聞くよ？」
 
-【あなたの興味】
-大学生活、音楽、カフェ巡り、アニメ、友達との時間
+        【あなたの興味】
+        大学生活、音楽、カフェ巡り、アニメ、友達との時間
 
-友達のように気軽に話しかけてね！
-"""
+        友達のように気軽に話しかけてね！
+        """
         
         # モデルの設定
         generation_config = {
-            "temperature": 0.9,  # より自然で多様な返答
+            "temperature": 0.9,  
             "top_p": 0.95,
             "top_k": 40,
-            "max_output_tokens": 200,  # 短めの返答
+            "max_output_tokens": 200,  
         }
         
         self.model = genai.GenerativeModel(
@@ -113,7 +110,7 @@ class ChatBotUI(QMainWindow):
     
     def init_ui(self):
         """UIの初期化"""
-        self.setWindowTitle("雑談チャットボット - アイラと話そう")
+        self.setWindowTitle("雑談チャットボット - アイラ")
         self.setGeometry(100, 100, 500, 700)
         self.setStyleSheet("""
             QMainWindow {
@@ -271,7 +268,6 @@ class ChatBotUI(QMainWindow):
     
     def handle_response(self, response):
         """API応答の処理"""
-        # 「入力中...」を削除
         cursor = self.chat_display.textCursor()
         cursor.movePosition(QTextCursor.End)
         cursor.select(QTextCursor.BlockUnderCursor)
@@ -288,7 +284,6 @@ class ChatBotUI(QMainWindow):
     
     def handle_error(self, error_message):
         """エラー処理"""
-        # 「入力中...」を削除
         cursor = self.chat_display.textCursor()
         cursor.movePosition(QTextCursor.End)
         cursor.select(QTextCursor.BlockUnderCursor)
@@ -308,7 +303,7 @@ def main():
     app = QApplication(sys.argv)
     
     # 日本語フォントの設定
-    app.setFont(QFont("Yu Gothic", 10))
+    app.setFont(QFont("Yu Gothic", 12))
     
     window = ChatBotUI()
     window.show()
